@@ -1,3 +1,44 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+if (isset($_POST['btnLogin'])) {
+  $email = $db->escapeString($_POST['email']);
+  $password = $db->escapeString($_POST['password']);
+  $type = $db->escapeString($_POST['register']);
+
+  $sql = "SELECT * FROM $type WHERE email = '" . $email . "' AND password = '" . $password . "'";
+  $db->sql($sql);
+  $res = $db->getResult();
+  $num = $db->numRows($res);
+  $error = array();
+
+  if ($num == 1) {
+    $_SESSION['id'] = $res[0]['id'];
+    if(($type == 'company')){
+      header("location: ../company/employer-dashboard.php");
+
+    }
+    
+
+  }
+  else{
+    $error['failed'] =  "invalid email or password";
+
+  }
+  
+  
+  // create array variable to handle error
+  
+
+
+  
+  //header("location: ../company/employer-dashboard.php");
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -68,32 +109,36 @@
               <div class="form-header">
                 <h5><i data-feather="user"></i>Login</h5>
               </div>
-              <div class="account-type">
-                <label for="idRegisterCan">
-                  <input id="idRegisterCan" type="radio" name="register">
-                  <span>Candidate</span>
-                </label>
-                <label for="idRegisterEmp">
-                  <input id="idRegisterEmp" type="radio" name="register">
-                  <span>Company</span>
-                </label>
-              </div>
-               <div class="account-type">
-                <label for="idRegisterColl">
-                  <input id="idRegisterColl" type="radio" name="register">
-                  <span>College</span>
-                </label>
-                <label for="idRegisterIns">
-                  <input id="idRegisterIns" type="radio" name="register">
-                  <span>Institution</span>
-                </label>
-              </div>
-              <form action="#">
-                <div class="form-group">
-                  <input id="email" type="email" placeholder="Email Address" class="form-control">
+              
+              <center>
+                    <div class="text-danger"><?php echo isset($error['failed']) ? $error['failed'] : ''; ?></div>
+                </center>
+              <form method="post" enctype="multipart/form-data">
+                <div class="account-type">
+                  <label for="idRegisterCan">
+                    <input id="idRegisterCan" type="radio" name="register" value="student" checked="checked">
+                    <span>Candidate</span>
+                  </label>
+                  <label for="idRegisterEmp">
+                    <input id="idRegisterEmp" type="radio" name="register" value="company" >
+                    <span>Company</span>
+                  </label>
+                </div>
+                <div class="account-type">
+                  <label for="idRegisterColl">
+                    <input id="idRegisterColl" type="radio" name="register" value="college" >
+                    <span>College</span>
+                  </label>
+                  <label for="idRegisterIns">
+                    <input id="idRegisterIns" type="radio" name="register" value="institution"  >
+                    <span>Institution</span>
+                  </label>
                 </div>
                 <div class="form-group">
-                  <input id="pwd" type="password" placeholder="Password" class="form-control">
+                  <input id="email" type="email" name="email" placeholder="Email Address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <input id="pwd" name="password" type="password" placeholder="Password" class="form-control" required>
                 </div>
                 <div class="more-option">
                   <div class="mt-0 terms">
@@ -104,8 +149,9 @@
                   </div>
                   <a href="#">Forget Password?</a>
                 </div>
+                      
                 
-                <input id="submit" type="button" class="button primary-bg btn-block" value="Login" />
+                <button  name="btnLogin" type="submit" class="button primary-bg btn-block">Login</button>
                 
               </form>
               <div class="shortcut-login">
@@ -147,7 +193,7 @@
     <script>
       $(document).ready(function() {
       
-      $("#submit").click(function() {
+      $("#subit").click(function() {
         
         var email = $("#email").val();
         var pwd = $("#pwd").val();
@@ -185,6 +231,10 @@
           cache: false,
           success: function(response) {
           alert(response.message);
+          if(response.success){
+            sessionStorage.setItem("id", "1");
+            window.location.replace("../company/employer-dashboard.php");
+          }
           },
           error: function(xhr, status, error) {
           console.error(xhr);

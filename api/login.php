@@ -12,6 +12,7 @@ $db = new Database();
 $db->connect();
 
 
+
 if (empty($_POST['email'])) {
     $response['success'] = false;
     $response['message'] = "Email should be filled!";
@@ -103,6 +104,9 @@ else if(($_POST['type'] == 'student')){
     $db->sql($sql);
     $res = $db->getResult();
     $num = $db->numRows($res);
+
+    
+	
     if ($num == 1) {
         $response['success'] = true;
         $response['message'] = "Login successfully";
