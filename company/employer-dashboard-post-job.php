@@ -1,3 +1,76 @@
+<?php 
+session_start();
+ob_start();
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+
+if (isset($_POST['btnPostJob']))
+{
+  $job_title = $db->escapeString($_POST['job_title']);
+  $job_category = $db->escapeString($_POST['job_category']);
+  $job_location = $db->escapeString($_POST['job_location']);
+  $job_type = $db->escapeString($_POST['job_type']);
+  $job_experience = $db->escapeString($_POST['job_experience']);
+  $job_salary_range = $db->escapeString($_POST['job_salary_range']);
+  $job_qualification = $db->escapeString($_POST['job_qualification']);
+  $job_gender = $db->escapeString($_POST['job_gender']);
+  $job_vacancy = $db->escapeString($_POST['job_vacancy']);
+  $job_last_date = $db->escapeString($_POST['job_last_date']);
+  $job_description = $db->escapeString($_POST['job_description']);
+  $responsibilities = $db->escapeString($_POST['responsibilities']);
+  $education = $db->escapeString($_POST['education']);
+  $other_benefits = $db->escapeString($_POST['other_benefits']);
+  $country = $db->escapeString($_POST['country']);
+  $city = $db->escapeString($_POST['city']);
+  $pincode = $db->escapeString($_POST['pincode']);
+  $location = $db->escapeString($_POST['location']);
+  $company_name = $db->escapeString($_POST['company_name']);
+  $web_address = $db->escapeString($_POST['web_address']);
+  $company_profile	 = $db->escapeString($_POST['company_profile']);
+  $package = $db->escapeString($_POST['package']);
+  $payment_method = $db->escapeString($_POST['payment_method']);
+
+  $data = array(
+    'job_title' => $job_title,
+    'job_category' => $job_category,
+    'job_location' => $job_location,
+    'job_type' => $job_type,
+    'job_experience' => $job_experience,
+    'job_salary_range' => $job_salary_range,
+    'job_qualification' => $job_qualification,
+    'job_gender' => $job_gender,
+    'job_vacancy' => $job_vacancy,
+    'job_last_date' => $job_last_date,
+    'job_description' => $job_description,
+    'responsibilities' => $responsibilities,
+    'education' => $education,
+    'other_benefits' => $other_benefits,
+    'country' => $country,
+    'city' => $city,
+    'pincode' => $pincode,
+    'location' => $location,
+    'company_name' => $company_name,
+    'web_address' => $web_address,
+    'company_profile' => $company_profile,
+    'package' => $package,
+    'payment_method' => $payment_method
+);
+if($db->insert('jobs', $data, 'id=' . $id)){
+  header("location: ../company/employer-dashboard.php");
+
+}
+
+}
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -149,7 +222,7 @@
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
                       <li class="menu-item"><a  href="employer-details.html">Employer Details</a></li>
-                      <li class="menu-item"><a  href="employer-dashboard-post-job.html">Post a Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post a Job</a></li>
                     </ul>
                   </li> -->
                   <li class="menu-item dropdown">
@@ -161,7 +234,7 @@
                           <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-post-job.html">Post Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
                   </li>
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
@@ -214,7 +287,7 @@
                     <div class="form-group row">
                       <label class="col-md-3 col-form-label">Job Title</label>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Your job title here">
+                        <input name="job_title" type="text" class="form-control" placeholder="Your job title here">
                       </div>
                     </div>
                     <div class="row">
@@ -223,7 +296,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="job_category" class="form-control">
                                 <option>Select Category</option>
                                 <option>Accounting / Finance</option>
                                 <option>Health Care</option>
@@ -235,12 +308,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Job Location">
+                              <input name="job_location" type="text" class="form-control" placeholder="Job Location">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="job_type" class="form-control">
                                 <option>Job Type</option>
                                 <option>Part Time</option>
                                 <option>Full Time</option>
@@ -253,7 +326,7 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="job_experience" class="form-control">
                                 <option>Experience (Optional)</option>
                                 <option>Less than 1 Year</option>
                                 <option>2 Year</option>
@@ -266,12 +339,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Salary Range">
+                              <input name="job_salary_range" type="text" class="form-control" placeholder="Salary Range">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="job_qualification" class="form-control">
                                 <option>Qualification</option>
                                 <option>Matriculation</option>
                                 <option>Intermidiate</option>
@@ -282,7 +355,7 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="job_gender" class="form-control">
                                 <option>Gender</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -292,12 +365,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Vacancy">
+                              <input name="job_vacancy" type="text" class="form-control" placeholder="Vacancy">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group datepicker">
-                              <input type="date" class="form-control">
+                              <input name="job_last_date" type="date" class="form-control">
                             </div>
                           </div>
                         </div>
@@ -306,25 +379,25 @@
                     <div class="row">
                       <label class="col-md-3 col-form-label">Job Description</label>
                       <div class="col-md-9">
-                        <textarea id="mytextarea" class="tinymce-editor tinymce-editor-1" placeholder="Description text here"></textarea>
+                        <textarea name="job_description" id="mytextarea" class="tinymce-editor tinymce-editor-1" placeholder="Description text here"></textarea>
                       </div>
                     </div>
                     <div class="row">
                       <label class="col-md-3 col-form-label">Responsibilities</label>
                       <div class="col-md-9">
-                        <textarea id="mytextarea2" class="tinymce-editor tinymce-editor-2" placeholder="Responsibilities (Optional)"></textarea>
+                        <textarea name="responsibilities" id="mytextarea2" class="tinymce-editor tinymce-editor-2" placeholder="Responsibilities (Optional)"></textarea>
                       </div>
                     </div>
                     <div class="row">
                       <label class="col-md-3 col-form-label">Education</label>
                       <div class="col-md-9">
-                        <textarea id="mytextarea3" class="tinymce-editor tinymce-editor-2" placeholder="Education (Optional)"></textarea>
+                        <textarea name="education" id="mytextarea3" class="tinymce-editor tinymce-editor-2" placeholder="Education (Optional)"></textarea>
                       </div>
                     </div>
                     <div class="row">
                       <label class="col-md-3 col-form-label">Other Benefits</label>
                       <div class="col-md-9">
-                        <textarea id="mytextarea4" class="tinymce-editor tinymce-editor-2" placeholder="Description text here"></textarea>
+                        <textarea name="other_benefits" id="mytextarea4" class="tinymce-editor tinymce-editor-2" placeholder="Description text here"></textarea>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -333,7 +406,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="country" class="form-control">
                                 <option>Country</option>
                                 <option>USA</option>
                                 <option>United Kindom</option>
@@ -344,7 +417,7 @@
                               <i class="fa fa-caret-down"></i>
                             </div>
                             <div class="form-group">
-                              <select class="form-control" id="exampleFormControlSelect11">
+                              <select name="city" class="form-control" id="exampleFormControlSelect11">
                                 <option>City</option>
                                 <option>New Work</option>
                                 <option>Washington D.C</option>
@@ -354,10 +427,10 @@
                               <i class="fa fa-caret-down"></i>
                             </div>
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Zip Code">
+                              <input name="pincode" type="text" class="form-control" placeholder="Zip Code">
                             </div>
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Location">
+                              <input name="location" type="text" class="form-control" placeholder="Your Location">
                             </div>
                           </div>
                           <div class="col-md-6">
@@ -377,17 +450,17 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Company Name">
+                              <input name="company_name" type="text" class="form-control" placeholder="Company Name">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Web Address">
+                              <input name="web_address" type="text" class="form-control" placeholder="Web Address">
                             </div>
                           </div>
                           <div class="col-md-12">
                             <div class="form-group">
-                              <textarea class="form-control" placeholder="Company Profile"></textarea>
+                              <textarea name="company_profile" class="form-control" placeholder="Company Profile"></textarea>
                             </div>
                           </div>
                         </div>
@@ -399,19 +472,19 @@
                         <div class="package-select">
                           <div class="package-select-inputs">
                             <div class="form-group">
-                              <input class="custom-radio" type="radio" id="radio_1" name="my-radio" value="1" checked>
+                              <input name="package" class="custom-radio" type="radio" id="radio_1" name="my-radio" value="1" checked>
                               <label for="radio_1">
                               <span class="dot"></span> <span class="package-type">Free</span> $0.00
                             </label>
                             </div>
                             <div class="form-group">
-                              <input class="custom-radio" type="radio" id="radio_2" name="my-radio" value="1">
+                              <input name="package" class="custom-radio" type="radio" id="radio_2" name="my-radio" value="1">
                               <label for="radio_2">
                               <span class="dot"></span> <span class="package-type">Stater</span> $22.00
                             </label>
                             </div>
                             <div class="form-group">
-                              <input class="custom-radio" type="radio" id="radio_3" name="my-radio" value="1">
+                              <input name="package" class="custom-radio" type="radio" id="radio_3" name="my-radio" value="1">
                               <label for="radio_3">
                               <span class="dot"></span> <span class="package-type">Advance</span> $44.00
                             </label>
@@ -437,7 +510,8 @@
                     <div class="form-group row">
                       <label class="col-md-3 col-form-label"></label>
                       <div class="col-md-9">
-                        <button class="button">Post Your Job</button>
+                        <button  name="btnPostJob" type="submit" class="button">Post Your Job</button>
+                        
                       </div>
                     </div>
                   </div>
@@ -473,7 +547,7 @@
                     <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.html">Manage Jobs</a></li>
                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
                     <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
-                    <li class="active"><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.html">Post New Job</a></li>
+                    <li class="active"><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="employer-dashboard-pricing.html">Pricing Plans</a></li>
                   </ul>

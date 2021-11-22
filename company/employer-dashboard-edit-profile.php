@@ -39,7 +39,7 @@ if (isset($_POST['btnUpdate']))
   $about_us = $db->escapeString($_POST['about_us']);
   $video = $db->escapeString($_POST['video']);
   $company_name = $db->escapeString($_POST['company_name']);
-  $password = $db->escapeString($_POST['password']);
+  $oldpassword = $db->escapeString($_POST['oldpassword']);
   $facebook = $db->escapeString($_POST['facebook']);
   $google = $db->escapeString($_POST['google']);
   $twitter = $db->escapeString($_POST['twitter']);
@@ -53,7 +53,7 @@ if (isset($_POST['btnUpdate']))
     'about_us' => $about_us,
     'video' => $video,
     'company_name' => $company_name,
-    'password' => $password,
+    'password' => $oldpassword,
     'facebook' => $facebook,
     'google' => $google,
     'twitter' => $twitter
@@ -220,7 +220,7 @@ if($db->update('company', $data, 'id=' . $id)){
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
                       <li class="menu-item"><a  href="employer-details.html">Employer Details</a></li>
-                      <li class="menu-item"><a  href="employer-dashboard-post-job.html">Post a Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post a Job</a></li>
                     </ul>
                   </li> -->
                   <li class="menu-item dropdown">
@@ -232,7 +232,7 @@ if($db->update('company', $data, 'id=' . $id)){
                           <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-post-job.html">Post Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
                   </li>
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
@@ -282,7 +282,7 @@ if($db->update('company', $data, 'id=' . $id)){
                 <form method="post" enctype="multipart/form-data" class="dashboard-form">
                   <div class="dashboard-section upload-profile-photo">
                     <div class="update-photo">
-                      <img class="image" src="dashboard/images/company-logo.png" alt="">
+                      <img class="image" src="<?php echo $profile ?>" alt="">
                     </div>
                     <div class="file-upload">            
                       <input type="file" class="file-input">Change Avatar
@@ -476,7 +476,7 @@ if($db->update('company', $data, 'id=' . $id)){
                     <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.html">Manage Jobs</a></li>
                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
                     <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
-                    <li><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.html">Post New Job</a></li>
+                    <li><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="employer-dashboard-pricing.html">Pricing Plans</a></li>
                   </ul>
