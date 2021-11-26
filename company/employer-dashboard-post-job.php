@@ -38,6 +38,7 @@ if (isset($_POST['btnPostJob']))
   $payment_method = $db->escapeString($_POST['payment_method']);
 
   $data = array(
+    'company_id' => $id,
     'job_title' => $job_title,
     'job_category' => $job_category,
     'job_location' => $job_location,
@@ -231,7 +232,7 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -281,7 +282,7 @@ if($db->insert('jobs', $data, 'id=' . $id)){
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <form action="#" class="dashboard-form job-post-form">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form job-post-form">
                   <div class="dashboard-section basic-info-input">
                     <h4><i data-feather="user-check"></i>Post A Job</h4>
                     <div class="form-group row">
@@ -544,7 +545,7 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                   <ul>
                     <li><i class="fas fa-home"></i><a href="employer-dashboard.php">Dashboard</a></li>
                     <li><i class="fas fa-user"></i><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                    <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.html">Manage Jobs</a></li>
+                    <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.php">Manage Jobs</a></li>
                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
                     <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
                     <li class="active"><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>

@@ -1,3 +1,105 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/functions.php');
+$function = new functions;
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$sql = "SELECT * FROM student WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+
+$edu_designation = $res[0]['edu_designation'];
+$edu_institute = $res[0]['edu_institute'];
+$edu_period = $res[0]['edu_period'];
+$edu_description = $res[0]['edu_description'];
+if (isset($_POST['btnUpdateEdu'])){
+  $edu_designation = $db->escapeString($_POST['edu_designation']);
+  $edu_institute = $db->escapeString($_POST['edu_institute']);
+  $edu_period = $db->escapeString($_POST['edu_period']);
+  $edu_description = $db->escapeString($_POST['edu_description']);
+  
+
+
+  $data = array(
+    'edu_designation' => $edu_designation,
+    'edu_institute' => $edu_institute,
+    'edu_period' => $edu_period,
+    'edu_description' => $edu_description
+);
+if($db->update('student', $data, 'id=' . $id)){
+  header("location: dashboard.php");
+
+}
+
+}
+
+
+if (isset($_POST['btnUpdateCVFile']))
+{
+  $menu_image = $db->escapeString($_FILES['cvfile']['name']);
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["cvfile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['cvfile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['cvfile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'cv_file' => $upload_image
+  );
+
+  }
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: dashboard.php");
+  
+  }
+
+}
+if (isset($_POST['btnUpdateCoverFile']))
+{
+  $menu_image = $db->escapeString($_FILES['coverfile']['name']);
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["coverfile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['coverfile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['coverfile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'cover_letter' => $upload_image
+  );
+
+  }
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: dashboard.php");
+  
+  }
+
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -154,11 +256,11 @@
                   <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                     <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
                           <li class="menu-item"><a  href="resume.html">Resume</a></li>
-                          <li class="menu-item"><a  href="edit-resume.html">Edit Resume</a></li>
+                          <li class="menu-item"><a  href="edit-resume.php">Edit Resume</a></li>
                           <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
                           <li class="menu-item"><a  href="dashboard-applied.html">Applied</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
@@ -171,7 +273,7 @@
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -246,15 +348,25 @@
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <div class="download-resume dashboard-section">
+              <form method="post" enctype="multipart/form-data" class="dashboard-form">
+              <div class="download-resume dashboard-section">
+                
                   <div class="update-file">
-                    <input type="file">Update CV <i data-feather="edit-2"></i>
+                    <input name="cvfile" type="file">Update CV <i data-feather="edit-2"></i>
                   </div>
                   <div class="update-file">
-                    <input type="file">Update Cover Letter <i data-feather="edit-2"></i>
+                    <input name="coverfile" type="file">Update Cover Letter <i data-feather="edit-2"></i>
                   </div>
-                  <span>Upload PDF File</span>
+                  <div class="call-to-action-button">
+                  <button  name="btnUpdateCVFile" type="submit" class="button">Upload CV</button>
+                  <button  name="btnUpdateCoverFile" type="submit" class="button">Upload Cover</button>
+              </div>
+                  
+                  
+                  
                 </div>
+              </form>
+                
                 <div class="skill-and-profile dashboard-section">
                   <div class="skill">
                     <label>Skills:</label>
@@ -633,10 +745,10 @@
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="book"></i>Education</h4>
-                            <a href="#" class="add-more">+ Add Education</a>
+                            <!-- <a href="#" class="add-more">+ Add Education</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">01</label>
@@ -645,7 +757,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Title</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="edu_designation" type="text" class="form-control" value="<?php echo  $edu_designation ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -655,7 +767,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Institute</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="edu_institute" type="text" class="form-control" value="<?php echo  $edu_institute ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -665,7 +777,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Period</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="edu_period" type="text" class="form-control" value="<?php echo  $edu_period ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -675,12 +787,12 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Description</div>
                                       </div>
-                                      <textarea class="form-control"></textarea>
+                                      <textarea name="edu_description" class="form-control" >  <?php echo  $edu_description ?> </textarea>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">02</label>
                                   <div class="col-sm-9">
@@ -722,11 +834,12 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnUpdateEdu" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -966,7 +1079,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Skill 02</label>
                                   <div class="col-sm-9">
@@ -1034,7 +1147,7 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
@@ -1442,10 +1555,10 @@
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li><i class="fas fa-home"></i><a href="dashboard.html">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.html">Edit Profile</a></li>
+                    <li><i class="fas fa-home"></i><a href="dashboard.php">Dashboard</a></li>
+                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.php">Edit Profile</a></li>
                     <li><i class="fas fa-file-alt"></i><a href="resume.html">Resume</a></li>
-                    <li class="active"><i class="fas fa-edit"></i><a href="edit-resume.html">Edit Resume</a></li>
+                    <li class="active"><i class="fas fa-edit"></i><a href="edit-resume.php">Edit Resume</a></li>
                     <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.html">Bookmarked</a></li>
                     <li><i class="fas fa-check-square"></i><a href="dashboard-applied.html">Applied Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>

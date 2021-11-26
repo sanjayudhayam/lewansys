@@ -1,3 +1,27 @@
+<?php 
+session_start();
+ob_start();
+
+include_once('../includes/custom-functions.php');
+
+$function = new custom_functions;
+
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$sql = "SELECT * FROM student WHERE id = $id";
+    $db->sql($sql);
+    $res = $db->getResult();
+    
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,7 +29,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Lewansys</title>
+    <title>Lewnasys</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -102,8 +126,8 @@
                         <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                        <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
+                        <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
                     <ul class="account-item-list">
@@ -154,31 +178,30 @@
                   <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                     <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
                           <li class="menu-item"><a  href="resume.html">Resume</a></li>
-                          <li class="menu-item"><a  href="edit-resume.html">Edit Resume</a></li>
+                          <li class="menu-item"><a  href="edit-resume.php">Edit Resume</a></li>
                           <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
                           <li class="menu-item"><a  href="dashboard-applied.html">Applied</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
                           <li class="menu-item"><a  href="dashboard-message.html">Message</a></li>
                           <li class="menu-item"><a  href="dashboard-alert.html">Alert</a></li>
                         </ul>
-                    
-                     <!--    <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
+                     <!--  <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
                         <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
                       </li> -->
-          
-                 <!--  <li class="menu-item dropdown">
+                <!--   <li class="menu-item dropdown">
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Pages</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a href="about-us.html">About Us</a></li>
@@ -203,7 +226,7 @@
                     </ul>
                   </li> -->
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                 <!--  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li> -->
+                  <!-- <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li> -->
                 </ul>
               </div>
             </nav>
@@ -227,7 +250,7 @@
               </nav>
             </div>
           </div>
-          <!-- <div class="col-md-6">
+         <!--  <div class="col-md-6">
             <div class="breadcrumb-form">
               <form action="#">
                 <input type="text" placeholder="Enter Keywords">
@@ -246,88 +269,89 @@
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <form action="#" class="dashboard-form">
-                  <div class="dashboard-section upload-profile-photo">
-                    <div class="update-photo">
-                      <img class="image" src="dashboard/images/user-1.jpg" alt="">
+                <div class="dashboard-section user-statistic-block">
+                  <div class="user-statistic">
+                    <i data-feather="pie-chart"></i>
+                    <h3>132</h3>
+                    <span>Companies Viewed</span>
+                  </div>
+                  <div class="user-statistic">
+                    <i data-feather="briefcase"></i>
+                    <h3>12</h3>
+                    <span>Applied Jobs</span>
+                  </div>
+                  <div class="user-statistic">
+                    <i data-feather="heart"></i>
+                    <h3>32</h3>
+                    <span>Favourite Jobs</span>
+                  </div>
+                </div>
+                <div class="dashboard-section dashboard-view-chart">
+                  <canvas id="view-chart" width="400" height="200"></canvas>
+                </div>
+                <div class="dashboard-section dashboard-recent-activity">
+                  <h4 class="title">Recent Activity</h4>
+                  <div class="activity-list">
+                    <i class="fas fa-bolt"></i>
+                    <div class="content">
+                      <h5>Your Resume Updated!</h5>
+                      <span class="time">5 hours ago</span>
                     </div>
-                    <div class="file-upload">            
-                      <input type="file" class="file-input">Change Avatar
+                    <div class="close-activity">
+                      <i class="fas fa-times"></i>
                     </div>
                   </div>
-                  <div class="dashboard-section basic-info-input">
-                    <h4><i data-feather="user-check"></i>Basic Info</h4>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Full Name</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Full Name">
-                      </div>
+                  <div class="activity-list">
+                    <i class="fas fa-arrow-circle-down"></i>
+                    <div class="content">
+                      <h5>Someone downloaded your resume.</h5>
+                      <span class="time">11 hours ago</span>
                     </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Username</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="@username">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Email Address</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="email@example.com">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Phone</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="+55 123 4563 4643">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Address</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Washington D.C">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Indestry Expertise</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="UI & UX Designer">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">About Me</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control" placeholder="Introduce Yourself"></textarea>
-                      </div>
+                    <div class="close-activity">
+                      <i class="fas fa-times"></i>
                     </div>
                   </div>
-                  <div class="dashboard-section basic-info-input">
-                    <h4><i data-feather="lock"></i>Change Password</h4>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Current Password</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Current Password">
-                      </div>
+                  <div class="activity-list">
+                    <i class="fas fa-check-square"></i>
+                    <div class="content">
+                      <h5>You applied for Project Manager @homeland</h5>
+                      <span class="time">11 hours ago</span>
                     </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">New Password</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="New Password">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Retype Password</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Retype Password">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label"></label>
-                      <div class="col-sm-9">
-                        <button class="button">Save Change</button>
-                      </div>
+                    <div class="close-activity">
+                      <i class="fas fa-times"></i>
                     </div>
                   </div>
-                </form>
+                  <div class="activity-list">
+                    <i class="fas fa-check-square"></i>
+                    <div class="content">
+                      <h5>You applied for Project Manager @homeland</h5>
+                      <span class="time">5 hours ago</span>
+                    </div>
+                    <div class="close-activity">
+                      <i class="fas fa-times"></i>
+                    </div>
+                  </div>
+                  <div class="activity-list">
+                    <i class="fas fa-user"></i>
+                    <div class="content">
+                      <h5>You changed password successfuly</h5>
+                      <span class="time">2 days ago</span>
+                    </div>
+                    <div class="close-activity">
+                      <i class="fas fa-times"></i>
+                    </div>
+                  </div>
+                  <div class="activity-list">
+                    <i class="fas fa-heart"></i>
+                    <div class="content">
+                      <h5>Someone bookmarked you</h5>
+                      <span class="time">3 days ago</span>
+                    </div>
+                    <div class="close-activity">
+                      <i class="fas fa-times"></i>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="dashboard-sidebar">
                 <div class="user-info">
@@ -335,8 +359,8 @@
                     <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
                   </div>
                   <div class="user-body">
-                    <h5>Lula Wallace</h5>
-                    <span>@username</span>
+                    <h5><?php echo $res[0]['name'] ?></h5>
+                    <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">
@@ -354,10 +378,10 @@
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li><i class="fas fa-home"></i><a href="dashboard.html">Dashboard</a></li>
-                    <li class="active"><i class="fas fa-user"></i><a href="dashboard-edit-profile.html">Edit Profile</a></li>
+                    <li class="active"><i class="fas fa-home"></i><a href="dashboard.php">Dashboard</a></li>
+                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.php">Edit Profile</a></li>
                     <li><i class="fas fa-file-alt"></i><a href="resume.html">Resume</a></li>
-                    <li><i class="fas fa-edit"></i><a href="edit-resume.html">Edit Resume</a></li>
+                    <li><i class="fas fa-edit"></i><a href="edit-resume.php">Edit Resume</a></li>
                     <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.html">Bookmarked</a></li>
                     <li><i class="fas fa-check-square"></i><a href="dashboard-applied.html">Applied Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>
@@ -520,7 +544,7 @@
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-4 order-lg-1">
-                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed and Developed By <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>.</p>
+                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed and Developed by <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>. </p>
                   </div>
                   <div class="col-xl-4 col-lg-3 order-lg-3">
                     <div class="back-to-top">

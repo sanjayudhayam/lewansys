@@ -21,6 +21,14 @@ if (isset($_POST['btnLogin'])) {
       header("location: ../company/employer-dashboard.php");
 
     }
+    else if(($type == 'college')){
+      header("location: ../college_institution/collage-dashboard.php");
+
+    }
+    else if(($type == 'student')){
+      header("location: ../student/dashboard.php");
+
+    }
     
 
   }

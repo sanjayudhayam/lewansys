@@ -1,3 +1,108 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+if (isset($_POST['btnAddStudent'])){
+  $student_name = $db->escapeString($_POST['student_name']);
+  $category = $db->escapeString($_POST['category']);
+  $location = $db->escapeString($_POST['location']);
+  $job_type = $db->escapeString($_POST['job_type']);
+  $experience = $db->escapeString($_POST['experience']);
+  $salary_range = $db->escapeString($_POST['salary_range']);
+  $qualification = $db->escapeString($_POST['qualification']);
+  $gender = $db->escapeString($_POST['gender']);
+  $dob = $db->escapeString($_POST['dob']);
+  $skill = $db->escapeString($_POST['skill']);
+  $about = $db->escapeString($_POST['about']);
+  $edu_designation = $db->escapeString($_POST['edu_designation']);
+  $edu_institute = $db->escapeString($_POST['edu_institute']);
+  $edu_period = $db->escapeString($_POST['edu_period']);
+  $edu_description = $db->escapeString($_POST['edu_description']);
+  $work_experience = $db->escapeString($_POST['work_experience']);
+  $exp_company_name = $db->escapeString($_POST['exp_company_name']);
+  $exp_period = $db->escapeString($_POST['exp_period']);
+  $exp_description = $db->escapeString($_POST['exp_description']);
+  $pro_designation = $db->escapeString($_POST['pro_designation']);
+  $pro_title = $db->escapeString($_POST['pro_title']);
+  $pro_value = $db->escapeString($_POST['pro_value']);
+  $spl_qualification = $db->escapeString($_POST['spl_qualification']);
+  $port_title = $db->escapeString($_POST['port_title']);
+  $port_image = (isset($_POST['port_image']) && !empty($_POST['port_image'])) ? $db->escapeString($_POST['port_image']) : "";
+    
+  
+  $port_link = $db->escapeString($_POST['port_link']);
+  $cv_file = (isset($_POST['cv_file']) && !empty($_POST['cv_file'])) ? $db->escapeString($_POST['cv_file']) : "";
+    
+  
+  $cover_letter = $db->escapeString($_POST['cover_letter']);
+  $social_portfolio = $db->escapeString($_POST['social_portfolio']);
+
+  $pd_name = $db->escapeString($_POST['pd_name']);
+  $pd_father_name = $db->escapeString($_POST['pd_father_name']);
+  $pd_mother_name = $db->escapeString($_POST['pd_mother_name']);
+  $pd_dob = $db->escapeString($_POST['pd_dob']);
+  $pd_nationality = $db->escapeString($_POST['pd_nationality']);
+  $pd_sex = $db->escapeString($_POST['pd_sex']);
+  $pd_address = $db->escapeString($_POST['pd_address']);
+
+  $data = array(
+    'name' => $student_name,
+    'category' => $category,
+    'location' => $location,
+    'job_type' => $job_type,
+    'experience' => $experience,
+    'salary_range' => $salary_range,
+    'qualification' => $qualification,
+    'gender' => $gender,
+    'dob' => $dob,
+    'skill' => $skill,
+    'about' => $about,
+    'edu_designation' => $edu_designation,
+    'edu_institute' => $edu_institute,
+    'edu_period' => $edu_period,
+    'edu_description' => $edu_description,
+    'work_experience' => $work_experience,
+    'exp_company_name' => $exp_company_name,
+    'exp_period' => $exp_period,
+    'exp_description' => $exp_description,
+    'pro_designation' => $pro_designation,
+    'pro_title' => $pro_title,
+    'pro_value' => $pro_value,
+    'spl_qualification' => $spl_qualification,
+    'port_title' => $port_title,
+    'port_image' => $port_image,
+    'port_link' => $port_link,
+
+    'cv_file' => $cv_file,
+    'cover_letter' => $cover_letter,
+    'social_portfolio' => $social_portfolio,
+    'pd_name' => $pd_name,
+    'pd_father_name' => $pd_father_name,
+    'pd_mother_name' => $pd_mother_name,
+    'pd_dob' => $pd_dob,
+    'pd_nationality' => $pd_nationality,
+    'pd_sex' => $pd_sex,
+    'pd_address' => $pd_address
+);
+
+if($db->insert('student', $data)){
+  header("location: ../college_institution/collage-dashboard.php");
+
+}
+
+
+
+}
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -49,7 +154,7 @@
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="collage-dashboard.html"><img src="images/logo-2.png" alt=""></a>
+                <a href="collage-dashboard.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -125,7 +230,7 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="collage-dashboard.html">Home</a></li>
+                  <li class="menu-item active"><a title="Home" href="collage-dashboard.php">Home</a></li>
                 
                   
                  <!--  <li class="menu-item dropdown">
@@ -140,12 +245,12 @@
                     <li class="menu-item dropdown">
                         <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                         <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="collage-dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="collage-dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a  href="employer-dashboard-manage-candidate.html">Manage Canditates</a></li>
                           <li class="menu-item"><a  href="job-listing.html">Jobs</a></li>
                           <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="add-student.html">Add Student</a></li>
+                          <li class="menu-item"><a  href="add-student.php">Add Student</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
                         </ul>
                       </li>
@@ -156,7 +261,7 @@
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -166,7 +271,7 @@
                   </li>
                  
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="add-student.html"><i class="fas fa-plus"></i>Add Student</a></li>
+                  <li class="menu-item post-job"><a href="add-student.php"><i class="fas fa-plus"></i>Add Student</a></li>
                 </ul>
               </div>
             </nav>
@@ -209,13 +314,13 @@
           <div class="col">
             <div class="post-container">
               <div class="post-content-wrapper">
-                <form action="#" class="job-post-form">
+                <form method="post" enctype="multipart/form-data" action="#" class="job-post-form">
                   <div class="basic-info-input">
                     <h4><i data-feather="plus-circle"></i>Add Student</h4>
                     <div id="full-name" class="form-group row">
                       <label class="col-md-3 col-form-label">Full Name</label>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Your Name">
+                        <input name="student_name" type="text" class="form-control" placeholder="Your Name">
                       </div>
                     </div>
                     <div id="information" class="row">
@@ -224,7 +329,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="category" class="form-control">
                                 <option>Select Category</option>
                                 <option>Accounting / Finance</option>
                                 <option>Health Care</option>
@@ -236,12 +341,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Location">
+                              <input name="location" type="text" class="form-control" placeholder="Your Location">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="job_type" class="form-control">
                                 <option>Job Type</option>
                                 <option>Part Time</option>
                                 <option>Full Time</option>
@@ -254,7 +359,7 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="experience" class="form-control">
                                 <option>Experience (Optional)</option>
                                 <option>Less than 1 Year</option>
                                 <option>2 Year</option>
@@ -267,12 +372,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Salary Range">
+                              <input name="salary_range" type="text" class="form-control" placeholder="Salary Range">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="qualification" class="form-control">
                                 <option>Qualification</option>
                                 <option>Matriculation</option>
                                 <option>Intermidiate</option>
@@ -283,7 +388,7 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select name="gender" class="form-control">
                                 <option>Gender</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -293,12 +398,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="date" class="form-control">
+                              <input name="dob" type="date" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-12">
                             <div class="form-group datepicker">
-                              <input type="text" class="form-control" placeholder="Your Skill">
+                              <input name="skill" type="text" class="form-control" placeholder="Your Skill">
                             </div>
                           </div>
                         </div>
@@ -307,14 +412,14 @@
                     <div id="about" class="row">
                       <label class="col-md-3 col-form-label">About You</label>
                       <div class="col-md-9">
-                        <textarea class="tinymce-editor-1" placeholder="Description text here"></textarea>
+                        <textarea name="about" class="tinymce-editor-1" placeholder="Description text here"></textarea>
                       </div>
                     </div>
                     <div id="education" class="row">
                       <label class="col-md-3 col-form-label">Education</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Designation">
+                          <input name="edu_designation" type="text" class="form-control" placeholder="Designation">
                         </div>
                       </div>
                     </div>
@@ -322,13 +427,13 @@
                       <label class="col-md-3 col-form-label">EDUCATION 01</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Institute">
+                          <input name="edu_institute" type="text" class="form-control" placeholder="Institute">
                         </div>
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Period">
+                          <input name="edu_period" type="text" class="form-control" placeholder="Period">
                         </div>
                         <div class="form-group">
-                          <textarea class="form-control" placeholder="Description (Optional)"></textarea>
+                          <textarea name="edu_description" class="form-control" placeholder="Description (Optional)"></textarea>
                         </div>
                         <a href="#" class="add-new-field">+ Add Education</a>
                       </div>
@@ -337,7 +442,7 @@
                       <label class="col-md-3 col-form-label">Work Experience</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Designation">
+                          <input name="work_experience" type="text" class="form-control" placeholder="Work Experience">
                         </div>
                       </div>
                     </div>
@@ -345,13 +450,13 @@
                       <label class="col-md-3 col-form-label">Experience 01</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Company Name">
+                          <input name="exp_company_name" type="text" class="form-control" placeholder="Company Name">
                         </div>
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Period">
+                          <input name="exp_period" type="text" class="form-control" placeholder="Period">
                         </div>
                         <div class="form-group">
-                          <textarea class="form-control" placeholder="Description (Optional)"></textarea>
+                          <textarea name="exp_description" class="form-control" placeholder="Description (Optional)"></textarea>
                         </div>
                         <a href="#" class="add-new-field">+ Add Experience</a>
                       </div>
@@ -360,7 +465,7 @@
                       <label class="col-md-3 col-form-label">Professional Skill</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Designation">
+                          <input name="pro_designation" type="text" class="form-control" placeholder="Designation">
                         </div>
                       </div>
                     </div>
@@ -368,10 +473,10 @@
                       <label class="col-md-3 col-form-label">SKILL 01</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Title">
+                          <input name="pro_title" type="text" class="form-control" placeholder="Title">
                         </div>
                         <div class="form-group">
-                          <input type="number" class="form-control" placeholder="value (Percen)">
+                          <input name="pro_value" type="number" class="form-control" placeholder="value (Percen)">
                         </div>
                         <a href="#" class="add-new-field">+ Add Experience</a>
                       </div>
@@ -379,14 +484,14 @@
                     <div id="qualification" class="row">
                       <label class="col-md-3 col-form-label">Special Qualification</label>
                       <div class="col-md-9">
-                        <textarea id="tiny" class="tinymce-editor-2" placeholder="Description text here"></textarea>
+                        <textarea name="spl_qualification" id="tiny" class="tinymce-editor-2" placeholder="Description text here"></textarea>
                       </div>
                     </div>
                     <div id="portfolio" class="row">
                       <label class="col-md-3 col-form-label">Portfolio</label>
                       <div class="col-md-9">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Title">
+                          <input name="port_title" type="text" class="form-control" placeholder="Title">
                         </div>
                       </div>
                     </div>
@@ -403,14 +508,14 @@
                                 <img class="image" src="images/portfolio/thumb-1.jpg" alt="">
                               </div>
                               <div class="file-upload">
-                                <input type="file" class="file-input">
+                                <input name="port_image" type="file" class="file-input">
                                 <i data-feather="plus"></i>
                               </div>
                             </div>
                           </div>
                         </div>
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Portfolio Link (Optional)">
+                          <input name="port_link" type="text" class="form-control" placeholder="Portfolio Link (Optional)">
                         </div>
                         <a href="#" class="add-new-field">+ Add Portfolio</a>
                       </div>
@@ -419,14 +524,14 @@
                       <label class="col-md-3 col-form-label">Upload CV</label>
                       <div class="col-md-9">
                         <div class="add-cv">
-                          <input type="file">CV File<i data-feather="upload-cloud"></i>
+                          <input name="cv_file" type="file">CV File<i data-feather="upload-cloud"></i>
                         </div>
                       </div>
                     </div>
                     <div id="cover" class="row">
                       <label class="col-md-3 col-form-label">Cover Letter</label>
                       <div class="col-md-9">
-                        <textarea class="tinymce-editor-1" placeholder="Description text here"></textarea>
+                        <textarea name="cover_letter" class="tinymce-editor-1" placeholder="Description text here"></textarea>
                       </div>
                     </div>
                     <div id="profile" class="row">
@@ -436,7 +541,7 @@
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <div class="input-group-text dropdown-label">
-                                <select class="form-control">
+                                <select  class="form-control">
                                   <option>Select</option>
                                   <option>Facebook</option>
                                   <option>Twitter</option>
@@ -445,7 +550,7 @@
                                 </select><i class="fa fa-caret-down"></i>
                               </div>
                             </div>
-                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Input Profile Link">
+                            <input name="social_portfolio" type="text" class="form-control" id="inlineFormInputGroup" placeholder="Input Profile Link">
                           </div>
                         </div>
                         <a href="#" class="add-new-field">+ Add Social</a>
@@ -457,32 +562,32 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Name">
+                              <input name="pd_name" type="text" class="form-control" placeholder="Your Name">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Father's Name">
+                              <input name="pd_father_name" type="text" class="form-control" placeholder="Father's Name">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Mother's Name">
+                              <input name="pd_mother_name" type="text" class="form-control" placeholder="Mother's Name">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="date" class="form-control">
+                              <input name="pd_dob" type="date" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Nationality">
+                              <input name="pd_nationality" type="text" class="form-control" placeholder="Nationality">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <select class="form-control">
+                              <select  name="pd_sex" class="form-control">
                                 <option>Sex</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -492,7 +597,7 @@
                           </div>
                           <div class="col-md-12">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Address">
+                              <input name="pd_address" type="text" class="form-control" placeholder="Your Address">
                             </div>
                           </div>
                         </div>
@@ -511,7 +616,8 @@
                     <div class="form-group row">
                       <label class="col-md-3 col-form-label"></label>
                       <div class="col-md-9">
-                        <button class="button">Publish</button>
+                       
+                        <button  name="btnAddStudent" type="submit" class="button">Add Student</button>
                       </div>
                     </div>
                   </div>

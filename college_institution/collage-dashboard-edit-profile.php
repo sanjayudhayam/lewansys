@@ -1,10 +1,133 @@
+<?php 
+session_start();
+ob_start();
+include_once('../includes/functions.php');
+$function = new functions;
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$sql = "SELECT * FROM college WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+
+$username = $res[0]['username'];
+$mobile = $res[0]['mobile'];
+$email = $res[0]['email'];
+$profile = $res[0]['profile'];
+$address = $res[0]['address'];
+$category = $res[0]['category'];
+$about_us = $res[0]['about_us'];
+$image = $res[0]['image'];
+$video = $res[0]['video'];    
+$college_name = $res[0]['college_name'];
+$password = $res[0]['password'];
+$facebook = $res[0]['facebook'];
+$google = $res[0]['google'];
+$twitter = $res[0]['twitter'];
+
+if (isset($_POST['btnpwdUpdate']))
+{
+  $newpassword = $db->escapeString($_POST['newpassword']);
+
+  $data = array(
+    'password' => $newpassword
+  );
+  if($db->update('college', $data, 'id=' . $id)){
+    header("location: collage-dashboard.php");
+  
+  }
+
+}
+if (isset($_POST['btnUpdate'])) 
+{
+  
+
+  
+  $menu_image = $db->escapeString($_FILES['profile']['name']);
+  $username = $db->escapeString($_POST['username']);
+  $mobile = $db->escapeString($_POST['mobile']);
+  $email = $db->escapeString($_POST['email']);
+  $address = $db->escapeString($_POST['address']);
+  $category = $db->escapeString($_POST['category']);
+  $about_us = $db->escapeString($_POST['about_us']);
+  $video = $db->escapeString($_POST['video']);
+  $college_name = $db->escapeString($_POST['college_name']);
+  $facebook = $db->escapeString($_POST['facebook']);
+  $google = $db->escapeString($_POST['google']);
+  $twitter = $db->escapeString($_POST['twitter']);
+
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["profile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['profile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['profile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'username' => $username,
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'profile' => $upload_image,
+      'category' => $category,
+      'about_us' => $about_us,
+      'video' => $video,
+      'college_name' => $college_name,
+      'facebook' => $facebook,
+      'google' => $google,
+      'twitter' => $twitter
+  );
+
+  }
+  else {
+    $data = array(
+      'username' => $username,
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'category' => $category,
+      'about_us' => $about_us,
+      'video' => $video,
+      'college_name' => $college_name,
+      'facebook' => $facebook,
+      'google' => $google,
+      'twitter' => $twitter
+  );
+  }
+
+  
+if($db->update('college', $data, 'id=' . $id)){
+  header("location: collage-dashboard.php");
+
+}
+
+
+
+}
+
+
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>Lewansys</title>
 
     <!-- Bootstrap CSS -->
@@ -43,13 +166,13 @@
   </head>
   <body>
 
-    <header class="header-2">
+   <header class="header-2">
       <div class="container">
         <div class="row">
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="collage-dashboard.html"><img src="images/logo-2.png" alt=""></a>
+                <a href="collage-dashboard.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -125,7 +248,7 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="collage-dashboard.html">Home</a></li>
+                  <li class="menu-item active"><a title="Home" href="collage-dashboard.php">Home</a></li>
                 
                   
                  <!--  <li class="menu-item dropdown">
@@ -140,14 +263,14 @@
                     <li class="menu-item dropdown">
                         <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                         <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="collage-dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="collage-dashboard-edit-profile.html">Edit Profile</a></li>
+                        <li class="menu-item"><a  href="collage-dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a  href="employer-dashboard-manage-candidate.html">Manage Canditates</a></li>
                           <li class="menu-item"><a  href="job-listing.html">Jobs</a></li>
                           <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="add-student.html">Add Student</a></li>
+                          <li class="menu-item"><a  href="add-student.php">Add Student</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
-                        </ul>
+                          
                       </li>
                       
                       <!-- <li class="menu-item dropdown">
@@ -156,7 +279,7 @@
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -166,7 +289,7 @@
                   </li>
                  
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="add-student.html"><i class="fas fa-plus"></i>Add Student</a></li>
+                  <li class="menu-item post-job"><a href="add-student.php"><i class="fas fa-plus"></i>Add Student</a></li>
                 </ul>
               </div>
             </nav>
@@ -181,11 +304,11 @@
         <div class="row">
           <div class="col-md-6">
             <div class="breadcrumb-area">
-              <h1>Collage/Institution Dashboard</h1>
+              <h1>Collage/Institute Dashboard</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <!-- <li class="breadcrumb-item active" aria-current="page">Collage/Institution Dashboard</li> -->
+                  <li class="breadcrumb-item"><a href="collage-dashboard.php">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
                 </ol>
               </nav>
             </div>
@@ -209,98 +332,185 @@
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <div class="dashboard-section user-statistic-block">
-                  <div class="user-statistic">
-                    <i data-feather="command"></i>
-                    <h3>06</h3>
-                    <span>Total Students</span>
-                  </div>
-                  <div class="user-statistic">
-                    <i data-feather="file-text"></i>
-                    <h3>123</h3>
-                    <span>Assigned Students</span>
-                  </div>
-                  <div class="user-statistic">
-                    <i data-feather="users"></i>
-                    <h3>32</h3>
-                    <span>Selected Students</span>
-                  </div>
-                </div>
-                <div class="dashboard-section dashboard-view-chart">
-                  <canvas id="view-chart" width="400" height="200"></canvas>
-                </div>
-                <div class="dashboard-section dashboard-recent-activity">
-                  <h4 class="title">Recent Activity</h4>
-                  <div class="activity-list">
-                    <i class="fas fa-bolt"></i>
-                    <div class="content">
-                      <h5>Student Resume Updated!</h5>
-                      <span class="time">5 hours ago</span>
+                <form method="post" enctype="multipart/form-data" class="dashboard-form">
+                  <div class="dashboard-section upload-profile-photo">
+                    <div class="update-photo">
+                      <img class="image" src="../<?php echo  $profile ?>" alt="">
                     </div>
-                    <div class="close-activity">
-                      <i class="fas fa-times"></i>
+                    <div class="file-upload">            
+                      <input name="profile" type="file" class="file-input">Change Avatar
                     </div>
                   </div>
-                  <div class="activity-list">
-                    <i class="fas fa-arrow-circle-down"></i>
-                    <div class="content">
-                      <h5>Someone downloaded your resume.</h5>
-                      <span class="time">11 hours ago</span>
+                  <div class="dashboard-section basic-info-input">
+                    <h4><i data-feather="user-check"></i>Basic Info</h4>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">College Name</label>
+                      <div class="col-sm-9">
+                        <input name="college_name" type="text" class="form-control" placeholder="College Name" value="<?php echo $college_name ?>">
+                      </div>
                     </div>
-                    <div class="close-activity">
-                      <i class="fas fa-times"></i>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Username</label>
+                      <div class="col-sm-9">
+                        <input name="username" type="text" class="form-control" placeholder="@username" value="<?php echo $username ?>"> 
+                      </div>
                     </div>
-                  </div>
-                  <div class="activity-list">
-                    <i class="fas fa-check-square"></i>
-                    <div class="content">
-                      <h5>You applied for Project Manager @homeland</h5>
-                      <span class="time">11 hours ago</span>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Email Address</label>
+                      <div class="col-sm-9">
+                        <input name="email" type="text" class="form-control" placeholder="email@example.com" value="<?php echo $email ?>">
+                      </div>
                     </div>
-                    <div class="close-activity">
-                      <i class="fas fa-times"></i>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Phone</label>
+                      <div class="col-sm-9">
+                        <input name="mobile" type="text" class="form-control" placeholder="+55 123 4563 4643" value="<?php echo $mobile ?>">
+                      </div>
                     </div>
-                  </div>
-                  <div class="activity-list">
-                    <i class="fas fa-check-square"></i>
-                    <div class="content">
-                      <h5>You applied for Project Manager @homeland</h5>
-                      <span class="time">5 hours ago</span>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Address</label>
+                      <div class="col-sm-9">
+                        <input name="address" type="text" class="form-control" placeholder="Washington D.C" value="<?php echo $address ?>">
+                      </div>
                     </div>
-                    <div class="close-activity">
-                      <i class="fas fa-times"></i>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Category</label>
+                      <div class="col-sm-9">
+                        <input name="category" type="text" class="form-control" placeholder="UI & UX Designer" value="<?php echo $category ?>">
+                      </div>
                     </div>
-                  </div>
-                  <div class="activity-list">
-                    <i class="fas fa-user"></i>
-                    <div class="content">
-                      <h5>You changed password successfuly</h5>
-                      <span class="time">2 days ago</span>
-                    </div>
-                    <div class="close-activity">
-                      <i class="fas fa-times"></i>
-                    </div>
-                  </div>
-                  <div class="activity-list">
-                    <i class="fas fa-heart"></i>
-                    <div class="content">
-                      <h5>Someone bookmarked you</h5>
-                      <span class="time">3 days ago</span>
-                    </div>
-                    <div class="close-activity">
-                      <i class="fas fa-times"></i>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">About Us</label>
+                      <div class="col-sm-9">
+                        <textarea name="about_us" class="form-control" placeholder="" value="<?php echo $about_us ?>"></textarea>
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <div class="dashboard-section media-inputs">
+                    <h4><i data-feather="image"></i>Photo &amp; Video</h4>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Intro Video</label>
+                      <div class="col-sm-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">Link</div>
+                          </div>
+                          <input name="video" type="text" class="form-control" value="<?php echo $video ?>" placeholder="https://www.youtube.com/watch?v=ZRkdyjJ_489M">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Gallery</label>
+                      <div class="col-sm-9">
+                        <div class="input-group image-upload-input">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">Image</div>
+                          </div>
+                          <div class="active">
+                            <div class="upload-images">
+                              <div class="pic">
+                                <span class="ti-plus"></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dashboard-section social-inputs">
+                    <h4><i data-feather="cast"></i>Social Networks</h4>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Social Links</label>
+                      <div class="col-sm-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fab fa-facebook-f"></i></div>
+                          </div>
+                          <input name="facebook" type="text" class="form-control" placeholder="facebook.com/username" value="<?php echo $facebook ?>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-sm-3 col-sm-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fab fa-twitter"></i></div>
+                          </div>
+                          <input name="twitter" type="text" class="form-control" placeholder="twitter.com/username" value="<?php echo $twitter ?>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-sm-3 col-sm-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fab fa-google-plus"></i></div>
+                          </div>
+                          <input name="google" type="text" class="form-control" placeholder="google.com/username" value="<?php echo $google ?>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <button  name="btnUpdate" type="submit" class="button">Save Change</button>
+                        
+                      </div>
+                    <!-- <div class="form-group row">
+                      <div class="offset-sm-3 col-sm-9">
+                        <div class="input-group add-new">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text dropdown-label">
+                              <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Select</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select><i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
+                          <input type="text" class="form-control" placeholder="Input Profile Link">
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                  <div class="dashboard-section basic-info-input">
+                    <h4><i data-feather="lock"></i>Change Password</h4>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Current Password</label>
+                      <div class="col-sm-9">
+                        <input name="oldpassword" type="password" class="form-control" placeholder="Current Password" value="<?php echo $password ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">New Password</label>
+                      <div class="col-sm-9">
+                        <input name="newpassword" type="password" class="form-control" placeholder="New Password">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Retype Password</label>
+                      <div class="col-sm-9">
+                        <input type="password" class="form-control" placeholder="Retype Password">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <button  name="btnpwdUpdate" type="submit" class="button">Change Password</button>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
               <div class="dashboard-sidebar">
                 <div class="company-info">
                   <div class="thumb">
-                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
+                    <img src="<?php echo $profile ?>" class="img-fluid" alt="">
                   </div>
                   <div class="company-body">
-                    <h5>Degoin</h5>
-                    <span>@username</span>
+                    <h5><?php echo $college_name ?></h5>
+                    <span>@.<?php echo $username ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">
@@ -318,14 +528,17 @@
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li class="active"><i class="fas fa-home"></i><a href="collage-dashboard.html">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i><a href="collage-dashboard-edit-profile.html">Edit Profile</a></li>
+                  <li ><i class="fas fa-home"></i><a href="collage-dashboard.php">Dashboard</a></li>
+                    <li class="active"><i class="fas fa-user"></i><a href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
                      <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
                     <li><i class="fas fa-briefcase"></i><a href="job-listing.html">Jobs</a></li>
                      <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.html">Bookmarked</a></li>
-                    <li><i class="fas fa-plus-square"></i><a href="add-student.html">Add Student</a></li>
+                    <li><i class="fas fa-plus-square"></i><a href="add-student.php">Add Student</a></li>
                     <!-- <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li> -->
                     <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
+
+
+                   
                   </ul>
                   <ul class="delete">
                     <li><i class="fas fa-power-off"></i><a href="#">Logout</a></li>
@@ -374,9 +587,9 @@
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="#" class="button">Add Resume</a>
+                <a href="add-resume.html" class="button">Add Resume</a>
                 <span>Or</span>
-                <a href="#" class="button">Post A Job</a>
+                <a href="post-job.html" class="button">Post A Job</a>
               </div>
             </div>
           </div>
