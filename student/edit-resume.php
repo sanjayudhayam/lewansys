@@ -16,32 +16,256 @@ $sql = "SELECT * FROM student WHERE id = $id";
 $db->sql($sql);
 $res = $db->getResult();
 
+$about = $res[0]['about'];
+$category = $res[0]['category'];
+$location = $res[0]['location'];
+$job_type = $res[0]['job_type'];
+$experience = $res[0]['experience'];
+$salary_range = $res[0]['salary_range'];
+$gender = $res[0]['gender'];
+$age = $res[0]['age'];
+$qualification = $res[0]['qualification'];
+$skill = $res[0]['skill'];
+
 $edu_designation = $res[0]['edu_designation'];
 $edu_institute = $res[0]['edu_institute'];
 $edu_period = $res[0]['edu_period'];
 $edu_description = $res[0]['edu_description'];
+
+$exp_title = $res[0]['exp_title'];
+$exp_company_name = $res[0]['exp_company_name'];
+$exp_period = $res[0]['exp_period'];
+$exp_description = $res[0]['exp_description'];
+
+$pro_designation = $res[0]['pro_designation'];
+$pro_title = $res[0]['pro_title'];
+$pro_value = $res[0]['pro_value'];
+
+$spl_qualification = $res[0]['spl_qualification'];
+
+$port_title = $res[0]['port_title'];
+$port_image = $res[0]['port_image'];
+$port_link = $res[0]['port_link'];
+
+$pd_name = $res[0]['pd_name'];
+$pd_father_name = $res[0]['pd_father_name'];
+$pd_mother_name = $res[0]['pd_mother_name'];
+$pd_dob = $res[0]['pd_dob'];
+$pd_nationality = $res[0]['pd_nationality'];
+$pd_sex = $res[0]['pd_sex'];
+$pd_address = $res[0]['pd_address'];
+$pd_age = $res[0]['pd_age'];
+
+$facebook = $res[0]['facebook'];
+$twitter = $res[0]['twitter'];
+$google = $res[0]['google'];
+$linkedin = $res[0]['linkedin'];
+$pinterest = $res[0]['pinterest'];
+$instagram = $res[0]['instagram'];
+$behance = $res[0]['behance'];
+$dribbble = $res[0]['dribbble'];
+$github = $res[0]['github'];
+
+if (isset($_POST['btnUpdateSocLink'])){
+  $facebook = $db->escapeString($_POST['facebook']);
+  $twitter = $db->escapeString($_POST['twitter']);
+  $google = $db->escapeString($_POST['google']);
+  $linkedin = $db->escapeString($_POST['linkedin']);
+  $pinterest = $db->escapeString($_POST['pinterest']);
+  $instagram = $db->escapeString($_POST['instagram']);
+  $behance = $db->escapeString($_POST['behance']);
+  $dribbble = $db->escapeString($_POST['dribbble']);
+  $github = $db->escapeString($_POST['github']);
+
+  $data = array(
+    'facebook' => $facebook,
+    'twitter' => $twitter,
+    'google' => $google,
+    'linkedin' => $linkedin,
+    'pinterest' => $pinterest,
+    'instagram' => $instagram,
+    'behance' => $behance,
+    'dribbble' => $dribbble,
+    'github' => $github
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+  
+
+}
+if (isset($_POST['btnSkillUpdate'])){
+  $skill = $db->escapeString($_POST['skill']);
+  $data = array(
+    'skill' => $skill
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+  
+
+}
+if (isset($_POST['btnUpdateAbout']))
+{
+  $about = $db->escapeString($_POST['about']);
+  $category = $db->escapeString($_POST['category']);
+  $location = $db->escapeString($_POST['location']);
+  $job_type = $db->escapeString($_POST['job_type']);
+  $experience = $db->escapeString($_POST['experience']);
+  $salary_range = $db->escapeString($_POST['salary_range']);
+  $gender = $db->escapeString($_POST['gender']);
+  $age = $db->escapeString($_POST['age']);
+  $qualification = $db->escapeString($_POST['qualification']);
+  $data = array(
+    'about' => $about,
+    'category' => $category,
+    'location' => $location,
+    'job_type' => $job_type,
+    'experience' => $experience,
+    'salary_range' => $salary_range,
+    'gender' => $gender,
+    'age' => $age,
+    'qualification' => $qualification
+  );
+
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
 if (isset($_POST['btnUpdateEdu'])){
   $edu_designation = $db->escapeString($_POST['edu_designation']);
   $edu_institute = $db->escapeString($_POST['edu_institute']);
   $edu_period = $db->escapeString($_POST['edu_period']);
   $edu_description = $db->escapeString($_POST['edu_description']);
-  
-
-
   $data = array(
     'edu_designation' => $edu_designation,
     'edu_institute' => $edu_institute,
     'edu_period' => $edu_period,
     'edu_description' => $edu_description
-);
-if($db->update('student', $data, 'id=' . $id)){
-  header("location: dashboard.php");
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
 
 }
+if (isset($_POST['btnExpUpdate'])){
+  $exp_title = $db->escapeString($_POST['exp_title']);
+  $exp_company_name = $db->escapeString($_POST['exp_company_name']);
+  $exp_period = $db->escapeString($_POST['exp_period']);
+  $exp_description = $db->escapeString($_POST['exp_description']);
+  $data = array(
+    'exp_title' => $exp_title,
+    'exp_company_name' => $exp_company_name,
+    'exp_period' => $exp_period,
+    'exp_description' => $exp_description
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
 
 }
+if (isset($_POST['btnProUpdate'])){
+  $pro_designation = $db->escapeString($_POST['pro_designation']);
+  $pro_title = $db->escapeString($_POST['pro_title']);
+  $pro_value = $db->escapeString($_POST['pro_value']);
+  $data = array(
+    'pro_designation' => $pro_designation,
+    'pro_title' => $pro_title,
+    'pro_value' => $pro_value
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
 
 
+}
+if (isset($_POST['btnSqUpdate'])){
+  $spl_qualification = $db->escapeString($_POST['spl_qualification']);
+  $data = array(
+    'spl_qualification' => $spl_qualification
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+
+}
+if (isset($_POST['btnPerUpdate'])){
+  $pd_name = $db->escapeString($_POST['pd_name']);
+  $pd_father_name = $db->escapeString($_POST['pd_father_name']);
+  $pd_mother_name = $db->escapeString($_POST['pd_mother_name']);
+  $pd_dob = $db->escapeString($_POST['pd_dob']);
+  $pd_nationality = $db->escapeString($_POST['pd_nationality']);
+  $pd_sex = $db->escapeString($_POST['pd_sex']);
+  $pd_address = $db->escapeString($_POST['pd_address']);
+  $pd_age = $db->escapeString($_POST['pd_age']);
+
+  $data = array(
+    'pd_name' => $pd_name,
+    'pd_father_name' => $pd_father_name,
+    'pd_mother_name' => $pd_mother_name,
+    'pd_dob' => $pd_dob,
+    'pd_nationality' => $pd_nationality,
+    'pd_sex' => $pd_sex,
+    'pd_address' => $pd_address,
+    'pd_age' => $pd_age
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnPortUpdate'])){
+  $menu_image = $db->escapeString($_FILES['port_image']['name']);
+  $port_title = $db->escapeString($_POST['port_title']);
+  $port_link = $db->escapeString($_POST['port_link']);
+
+  if (!empty($menu_image)) {
+    
+    $extension = end(explode(".", $_FILES["port_image"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['port_image']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['port_image']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'port_title' => $port_title,
+      'port_image' => $upload_image,
+      'port_link' => $port_link
+    );
+
+  }
+  else {
+    $port_title = $db->escapeString($_POST['port_title']);
+    $port_link = $db->escapeString($_POST['port_link']);
+    $data = array(
+      'port_title' => $port_title,
+      'port_link' => $port_link
+    );
+
+  }
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
 if (isset($_POST['btnUpdateCVFile']))
 {
   $menu_image = $db->escapeString($_FILES['cvfile']['name']);
@@ -65,7 +289,7 @@ if (isset($_POST['btnUpdateCVFile']))
 
   }
   if($db->update('student', $data, 'id=' . $id)){
-    header("location: dashboard.php");
+    header("location: edit-resume.php");
   
   }
 
@@ -93,7 +317,7 @@ if (isset($_POST['btnUpdateCoverFile']))
 
   }
   if($db->update('student', $data, 'id=' . $id)){
-    header("location: dashboard.php");
+    header("location: edit-resume.php");
   
   }
 
@@ -370,9 +594,9 @@ if (isset($_POST['btnUpdateCoverFile']))
                 <div class="skill-and-profile dashboard-section">
                   <div class="skill">
                     <label>Skills:</label>
-                    <a href="#">Design</a>
-                    <a href="#">Illustration</a>
-                    <a href="#">iOS</a>
+                    <a href="#"><?php echo  $skill ?></a>
+                    <!-- <a href="#">Illustration</a>
+                    <a href="#">iOS</a> -->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#modal-skill">
                       <i data-feather="edit-2"></i>
@@ -384,10 +608,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                           <div class="modal-body">
                             <div class="title">
                               <h4><i data-feather="git-branch"></i>MY SKILL</h4>
-                              <a href="#" class="add-more">+ Add Skills</a>
+                              <!-- <a href="#" class="add-more">+ Add Skills</a> -->
                             </div>
                             <div class="content">
-                              <form action="#">
+                              <form method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Type Skills</label>
                                   <div class="col-sm-9">
@@ -395,11 +619,11 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">01</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="skill" type="text" class="form-control" value="<?php echo  $skill ?>">
                                     </div>
                                   </div>
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="input-group">
                                       <div class="input-group-prepend">
@@ -448,11 +672,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <input type="text" class="form-control" >
                                     </div>
                                   </div>
-                                </div>
+                                </div> -->
                                 <div class="row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="buttons">
-                                      <button class="primary-bg">Save Update</button>
+                                      <button  name="btnSkillUpdate" type="submit" class="primary-bg">Save Update</button>
+                                      
                                       <button class="" data-dismiss="modal">Cancel</button>
                                     </div>
                                   </div>
@@ -466,14 +691,14 @@ if (isset($_POST['btnUpdateCoverFile']))
                   </div>
                   <div class="social-profile">
                     <label>Social:</label>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-google-plus"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                    <a href="#"><i class="fab fa-behance"></i></a>
-                    <a href="#"><i class="fab fa-dribbble"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="<?php echo  $facebook ?>" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="<?php echo  $twitter ?>" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="<?php echo  $google ?>" target="_blank"><i class="fab fa-google-plus"></i></a>
+                    <a href="<?php echo  $linkedin ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="<?php echo  $pinterest ?>" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="<?php echo  $behance ?>" target="_blank"><i class="fab fa-behance"></i></a>
+                    <a href="<?php echo  $dribbble ?>" target="_blank"><i class="fab fa-dribbble"></i></a>
+                    <a href="<?php echo  $github ?>" target="_blank"><i class="fab fa-github"></i></a>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#modal-social">
                       <i data-feather="edit-2"></i>
@@ -485,10 +710,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                           <div class="modal-body">
                             <div class="title">
                               <h4><i data-feather="git-branch"></i>Social Networks</h4>
-                              <a href="#" class="add-more">+ Add Social</a>
+                              <!-- <a href="#" class="add-more">+ Add Social</a> -->
                             </div>
                             <div class="content">
-                              <form action="#">
+                              <form method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Social Links</label>
                                   <div class="col-sm-9">
@@ -496,7 +721,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-facebook-f"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="facebook.com/username">
+                                      <input name="facebook" type="text" class="form-control"  placeholder="facebook.com/username" value="<?php echo  $facebook ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -506,7 +731,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-twitter"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="twitter.com/username">
+                                      <input name="twitter" type="text" class="form-control"  placeholder="twitter.com/username" value="<?php echo  $twitter ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -516,7 +741,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-google-plus"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="google.com/username">
+                                      <input name="google" type="text" class="form-control"  placeholder="google.com/username" value="<?php echo  $google ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -526,7 +751,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-linkedin-in"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="linkedin.com/username">
+                                      <input name="linkedin" type="text" class="form-control"  placeholder="linkedin.com/username" value="<?php echo  $linkedin ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -536,7 +761,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-pinterest-p"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="pinterest.com/username">
+                                      <input name="pinterest" type="text" class="form-control"  placeholder="pinterest.com/username" value="<?php echo  $pinterest ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -546,7 +771,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-instagram"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="instagram.com/username">
+                                      <input name="instagram" type="text" class="form-control"  placeholder="instagram.com/username" value="<?php echo  $instagram ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -556,7 +781,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-behance"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="behance.com/username">
+                                      <input name="behance" type="text" class="form-control"  placeholder="behance.com/username" value="<?php echo  $behance ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -566,7 +791,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-dribbble"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="dribbble.com/username">
+                                      <input name="dribbble" type="text" class="form-control"  placeholder="dribbble.com/username" value="<?php echo  $dribbble ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -576,11 +801,11 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-github"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="github.com/username">
+                                      <input name="github" type="text" class="form-control"  placeholder="github.com/username" value="<?php echo  $github ?>">
                                     </div>
                                   </div>
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="input-group">
                                       <div class="input-group-prepend">
@@ -597,11 +822,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <input type="text" class="form-control"  placeholder="Input Profile Link">
                                     </div>
                                   </div>
-                                </div>
+                                </div> -->
                                 <div class="row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="buttons">
-                                      <button class="primary-bg">Save Update</button>
+                                      
+                                      <button  name="btnUpdateSocLink" type="submit" class="primary-bg">Save Update</button>
                                       <button class="" data-dismiss="modal">Cancel</button>
                                     </div>
                                   </div>
@@ -616,20 +842,20 @@ if (isset($_POST['btnUpdateCoverFile']))
                 </div>
                 <div class="about-details details-section dashboard-section">
                   <h4><i data-feather="align-left"></i>About Me</h4>
-                  <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including.</p>
-                  <p>Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable </p>
+                  <p><?php echo  $about ?></p>
+                  
                   <div class="information-and-contact">
                     <div class="information">
                       <h4>Information</h4>
                       <ul>
-                        <li><span>Category:</span> Design & Creative</li>
-                        <li><span>Location:</span> Los Angeles</li>
-                        <li><span>Status:</span> Full-time</li>
-                        <li><span>Experience:</span> 3 year(s)</li>
-                        <li><span>Salary:</span> $32k - $36k</li>
-                        <li><span>Gender:</span> Male</li>
-                        <li><span>Age:</span> 24 Year(s)</li>
-                        <li><span>Qualification:</span> Gradute</li>
+                        <li><span>Category:</span> <?php echo  $category ?></li>
+                        <li><span>Location:</span> <?php echo  $location ?></li>
+                        <li><span>Job Type:</span> <?php echo  $job_type ?></li>
+                        <li><span>Experience:</span> <?php echo  $experience ?> year(s)</li>
+                        <li><span>Salary:</span> <?php echo  $salary_range ?></li>
+                        <li><span>Gender:</span> <?php echo  $gender ?></li>
+                        <li><span>Age:</span> <?php echo  $age ?> Year(s)</li>
+                        <li><span>Qualification:</span> <?php echo  $qualification ?></li>
                       </ul>
                     </div>
                   </div>
@@ -646,66 +872,75 @@ if (isset($_POST['btnUpdateCoverFile']))
                             <h4><i data-feather="align-left"></i>About Me</h4>
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Write Yourself</label>
                                 <div class="col-sm-9">
-                                  <textarea class="form-control" placeholder="Write Yourself"></textarea>
+                                  <textarea name="about" class="form-control" placeholder="Write Yourself"><?php echo  $about ?></textarea>
                                 </div>
                               </div>
                               <h4><i data-feather="align-left"></i>Information</h4>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Category</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Design &amp; Creative">
+                                  <input name="category" type="text" class="form-control"  placeholder="Design &amp; Creative" value="<?php echo  $category ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Location</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Los Angeles">
+                                  <input name="location" type="text" class="form-control"  placeholder="Los Angeles" value="<?php echo  $location ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Status</label>
+                                <label class="col-sm-3 col-form-label">Job Type</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Full Time">
+                                    <select name="job_type" class="form-control">
+                                    <option>Job Type</option>
+                                    <option>Part Time</option>
+                                    <option>Full Time</option>
+                                    <option>Temperory</option>
+                                    <option>Permanent</option>
+                                    <option>Freelance</option>
+                                  </select>
+                                  
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Experience</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="3 Year">
+                                  <input name="experience" type="text" class="form-control"  placeholder="3 Year" value="<?php echo  $experience ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Salary Range</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="30k - 40k">
+                                  <input name="salary_range" type="text" class="form-control"  placeholder="30k - 40k" value="<?php echo  $salary_range ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Gender</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Male">
+                                  <input name="gender" type="text" class="form-control"  placeholder="Male" value="<?php echo  $gender ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Age</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="25 Years">
+                                  <input name="age" type="text" class="form-control"  placeholder="25 Years" value="<?php echo  $age ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Qualification</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Gradute">
+                                  <input name="qualification" type="text" class="form-control"  placeholder="Gradute" value="<?php echo  $qualification ?>">
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    <button  name="btnUpdateAbout" type="submit" class="primary-bg">Save Update</button>
+                                    
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -720,20 +955,11 @@ if (isset($_POST['btnUpdateCoverFile']))
                 <div class="edication-background details-section dashboard-section">
                   <h4><i data-feather="book"></i>Education Background</h4>
                   <div class="education-label">
-                    <span class="study-year">2018 - Present</span>
-                    <h5>Masters in Software Engineering<span>@ Engineering University</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
+                    <span class="study-year"><?php echo  $edu_period ?></span>
+                    <h5><?php echo  $edu_designation ?><span>@ <?php echo  $edu_institute ?></span></h5>
+                    <p><?php echo  $edu_description ?></p>
                   </div>
-                  <div class="education-label">
-                    <span class="study-year">2014 - 2018</span>
-                    <h5>Diploma in Graphics Design<span>@ Graphic Arts Institute</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                  </div>
-                  <div class="education-label">
-                    <span class="study-year">2008 - 2014</span>
-                    <h5>Secondary School Certificate<span>@  Engineering High School</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                  </div>
+                  
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-education">
                     <i data-feather="edit-2"></i>
@@ -854,15 +1080,15 @@ if (isset($_POST['btnUpdateCoverFile']))
                 <div class="experience dashboard-section details-section">
                   <h4><i data-feather="briefcase"></i>Work Experiance</h4>
                   <div class="experience-section">
-                    <span class="service-year">2016 - Present</span>
-                    <h5>Lead UI/UX Designer<span>@ Codepassengers LTD</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
+                    <span class="service-year"><?php echo  $exp_period ?></span>
+                    <h5><?php echo  $exp_title ?><span>@ <?php echo  $exp_company_name ?></span></h5>
+                    <p><?php echo  $exp_description ?></p>
                   </div>
-                  <div class="experience-section">
+                  <!-- <div class="experience-section">
                     <span class="service-year">2012 - 2016</span>
                     <h5>Former Graphic Designer<span>@ Graphicreeeo CO</span></h5>
                     <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                  </div>
+                  </div> -->
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-experience">
                     <i data-feather="edit-2"></i>
@@ -874,12 +1100,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="briefcase"></i>Experience</h4>
-                            <a href="#" class="add-more">+ Add Experience</a>
+                            <!-- <a href="#" class="add-more">+ Add Experience</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">01</label>
                                   <div class="col-sm-9">
                                     <div class="input-group">
@@ -889,6 +1115,16 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <input type="text" class="form-control" >
                                     </div>
                                   </div>
+                                </div> -->
+                                <div class="form-group row">
+                                  <div class="offset-sm-3 col-sm-9">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text">TITLE</div>
+                                      </div>
+                                      <input  name="exp_title" type="text" class="form-control" value="<?php echo  $exp_title ?>" >
+                                    </div>
+                                  </div>
                                 </div>
                                 <div class="form-group row">
                                   <div class="offset-sm-3 col-sm-9">
@@ -896,7 +1132,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Company</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input  name="exp_company_name" type="text" class="form-control" value="<?php echo  $exp_company_name ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -906,7 +1142,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Period</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input  name="exp_period" type="text" class="form-control" value="<?php echo  $exp_period ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -916,12 +1152,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Description</div>
                                       </div>
-                                      <textarea class="form-control"></textarea>
+                                      <textarea name="exp_description" class="form-control"><?php echo  $exp_description ?></textarea>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">02</label>
                                   <div class="col-sm-9">
@@ -963,11 +1199,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    <button  name="btnExpUpdate" type="submit" class="button">Save Update</button>
+                                    
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -981,20 +1218,20 @@ if (isset($_POST['btnUpdateCoverFile']))
                 </div>
                 <div class="professonal-skill dashboard-section details-section">
                   <h4><i data-feather="feather"></i>Professional Skill</h4>
-                  <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting</p>
+                  <p><?php echo  $pro_designation ?></p>
                   <div class="progress-group">
                     <div class="progress-item">
                       <div class="progress-head">
-                        <p class="progress-on">Photoshop</p>
+                        <p class="progress-on"><?php echo  $pro_title ?></p>
                       </div>
                       <div class="progress-body">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                          <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo  $pro_value ?>" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
                         </div>
-                        <p class="progress-to">70%</p>
+                        <p class="progress-to"><?php echo  $pro_value ?>%</p>
                       </div>
                     </div>
-                    <div class="progress-item">
+                    <!-- <div class="progress-item">
                       <div class="progress-head">
                         <p class="progress-on">HTML/CSS</p>
                       </div>
@@ -1026,7 +1263,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                         </div>
                         <p class="progress-to">86%</p>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-pro-skill">
@@ -1039,10 +1276,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="feather"></i>Professional Skill</h4>
-                            <a href="#" class="add-more">+ Add Skill</a>
+                            <!-- <a href="#" class="add-more">+ Add Skill</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">About Skill</label>
@@ -1051,7 +1288,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Description</div>
                                       </div>
-                                      <textarea class="form-control"></textarea>
+                                      <textarea name="pro_designation" class="form-control"><?php echo  $pro_designation ?></textarea>
                                     </div>
                                   </div>
                                 </div>
@@ -1064,7 +1301,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Skill Name</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="pro_title" type="text" class="form-control" value="<?php echo  $pro_title ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -1074,7 +1311,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Percentage</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="pro_value" type="text" class="form-control" value="<?php echo  $pro_value ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -1151,7 +1388,8 @@ if (isset($_POST['btnUpdateCoverFile']))
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnProUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1166,10 +1404,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                 <div class="special-qualification dashboard-section details-section">
                   <h4><i data-feather="gift"></i>Special Qualification</h4>
                   <ul>
-                    <li>5 years+ experience designing and building products.</li>
-                    <li>Skilled at any Kind Design Tools.</li>
+                    <li><?php echo  $spl_qualification ?></li>
+                    <!-- <li>Skilled at any Kind Design Tools.</li>
                     <li>Passion for people-centered design, solid intuition.</li>
-                    <li>Hard Worker & Quick Lerner.</li>
+                    <li>Hard Worker & Quick Lerner.</li> -->
                   </ul>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-qualification">
@@ -1182,10 +1420,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="align-left"></i>Special Qualification</h4>
-                            <a href="#" class="add-more">+ Add Another</a>
+                            <!-- <a href="#" class="add-more">+ Add Another</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Type Here</label>
                                 <div class="col-sm-9">
@@ -1193,11 +1431,11 @@ if (isset($_POST['btnUpdateCoverFile']))
                                     <div class="input-group-prepend">
                                       <div class="input-group-text">01</div>
                                     </div>
-                                    <input type="text" class="form-control" >
+                                    <input name="spl_qualification" type="text" class="form-control" value="<?php echo  $spl_qualification ?>" >
                                   </div>
                                 </div>
                               </div>
-                              <div class="form-group row">
+                              <!-- <div class="form-group row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="input-group">
                                     <div class="input-group-prepend">
@@ -1236,11 +1474,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                     <input type="text" class="form-control" >
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnSqUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1302,10 +1541,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="grid"></i>Portfolio</h4>
-                            <a href="#" class="add-more">+ Add Another</a>
+                            <!-- <a href="#" class="add-more">+ Add Another</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Portfolio 01</label>
@@ -1314,7 +1553,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Title</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="port_title" type="text" class="form-control" value="<?php echo  $port_title ?>" >
                                     </div>
                                   </div>
                                 </div>
@@ -1326,10 +1565,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       </div>
                                       <div class="upload-profile-photo">
                                         <div class="update-photo">
-                                          <img class="image" src="images/portfolio/thumb-1.jpg" alt="">
+                                          <img class="image" src="../<?php echo  $port_image ?>" alt="">
                                         </div>
                                         <div class="file-upload">            
-                                          <input type="file" class="file-input">Change Avatar
+                                          <input name="port_image" type="file" class="file-input">Change Avatar
                                         </div>
                                       </div>
                                     </div>
@@ -1341,12 +1580,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Link</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="port_link" type="text" class="form-control" value="<?php echo  $port_link ?>">
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Portfolio 02</label>
                                   <div class="col-sm-9">
@@ -1425,11 +1664,12 @@ if (isset($_POST['btnUpdateCoverFile']))
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnPortUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1444,13 +1684,13 @@ if (isset($_POST['btnUpdateCoverFile']))
                 <div class="personal-information dashboard-section last-child details-section">
                   <h4><i data-feather="user-plus"></i>Personal Deatils</h4>
                   <ul>
-                    <li><span>Full Name:</span> Micheal N. Taylor</li>
-                    <li><span>Father's Name:</span> Howard Armour</li>
-                    <li><span>Mother's Name:</span> Megan Higbee</li>
-                    <li><span>Date of Birth:</span> 22/08/1992</li>
-                    <li><span>Nationality:</span> American </li>
-                    <li><span>Sex:</span> Male</li>
-                    <li><span>Address:</span> 2018 Nelm Street, Beltsville, VA 20705</li>
+                    <li><span>Full Name:</span> <?php echo  $pd_name ?></li>
+                    <li><span>Father's Name:</span> <?php echo  $pd_father_name ?></li>
+                    <li><span>Mother's Name:</span> <?php echo  $pd_mother_name ?></li>
+                    <li><span>Date of Birth:</span> <?php echo  $pd_dob ?></li>
+                    <li><span>Nationality:</span> <?php echo  $pd_nationality ?></li>
+                    <li><span>Sex:</span> <?php echo  $pd_sex ?></li>
+                    <li><span>Address:</span> <?php echo  $pd_address ?></li>
                   </ul>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-personal-details">
@@ -1465,59 +1705,60 @@ if (isset($_POST['btnUpdateCoverFile']))
                             <h4><i data-feather="user-plus"></i>Personal Details</h4>
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Micheal N. Taylor">
+                                  <input name="pd_name" type="text" class="form-control"  placeholder="Micheal N. Taylor" value="<?php echo  $pd_name ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Father’s Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Howard Armour">
+                                  <input name="pd_father_name" type="text" class="form-control"  placeholder="Howard Armour" value="<?php echo  $pd_father_name ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Mother’s Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Megan Higbee">
+                                  <input name="pd_mother_name" type="text" class="form-control"  placeholder="Megan Higbee" value="<?php echo  $pd_mother_name ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Date Of Birth</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="22/08/1992">
+                                  <input name="pd_dob" type="text" class="form-control"  placeholder="22/08/1992" value="<?php echo  $pd_dob ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Nationality</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="American">
+                                  <input name="pd_nationality" type="text" class="form-control"  placeholder="American" value="<?php echo  $pd_nationality ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Gender</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Male">
+                                  <input name="pd_sex" type="text" class="form-control"  placeholder="Male" value="<?php echo  $pd_sex ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Age</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="25 Years">
+                                  <input name="pd_age" type="text" class="form-control"  placeholder="25 Years" value="<?php echo  $pd_age ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="2018 Nelm Street, Beltsville, VA 20705">
+                                  <input name="pd_address" type="text" class="form-control"  placeholder="2018 Nelm Street, Beltsville, VA 20705" value="<?php echo  $pd_address ?>">
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnPerUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>

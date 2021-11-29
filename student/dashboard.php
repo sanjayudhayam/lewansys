@@ -123,7 +123,7 @@ $sql = "SELECT * FROM student WHERE id = $id";
                   <div class="account-card">
                     <div class="header-top-account-info">
                       <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
+                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
                         <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
@@ -356,7 +356,7 @@ $sql = "SELECT * FROM student WHERE id = $id";
               <div class="dashboard-sidebar">
                 <div class="user-info">
                   <div class="thumb">
-                    <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
+                    <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
                   <div class="user-body">
                     <h5><?php echo $res[0]['name'] ?></h5>
